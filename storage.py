@@ -1,61 +1,77 @@
 # storage.py
-# Maneja guardado y lectura de archivos CSV y dict
+# Maneja guardado y lectura de archivos CSV.
 
 import csv
-import json
 import os
 
 CLIENTES_CSV = "clientes.csv"
 TURNOS_CSV = "turnos.csv"
-DB_JSON = "db.json"
 
 
 def load_from_csv():
+    """Carga clientes y turnos desde CSV a un diccionario db."""
     db = {"clientes": {}, "turnos": {}}
 
-    # Clientes
+    # --- Clientes ---
     if os.path.exists(CLIENTES_CSV):
         with open(CLIENTES_CSV, newline="", encoding="utf-8") as f:
             reader = csv.DictReader(f)
             for row in reader:
                 cid = row["id"]
-                db["clientes"][cid] = row
+                db["clientes"][cid] = {
+                    "id": cid,
+                    "nombre": row["nombre"],
+                    "telefono": row["telefono"],
+                    "email": row.get("email") or ""
+                }
 
-    # Turnos
+    # --- Turnos ---
     if os.path.exists(TURNOS_CSV):
         with open(TURNOS_CSV, newline="", encoding="utf-8") as f:
             reader = csv.DictReader(f)
             for row in reader:
                 tid = row["id"]
-                db["turnos"][tid] = row
+                db["turnos"][tid] = {
+                    "id": tid,
+                    "cliente_id": row["cliente_id"],
+                    "fecha": row["fecha"],
+                    "hora": row["hora"],
+                    "servicio": row["servicio"],
+                    "estilista": row.get("estilista") or "",
+                    "estado": row.get("estado") or "activo"
+                }
 
     return db
 
 
 def save_to_csv(db):
-    # Guardar clientes
+    """Guarda el contenido de db en clientes.csv y turnos.csv."""
+
+    # --- Clientes ---
     with open(CLIENTES_CSV, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=["id", "nombre", "telefono", "email"])
+        fieldnames = ["id", "nombre", "telefono", "email"]
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         for c in db["clientes"].values():
-            writer.writerow(c)
+            writer.writerow({
+                "id": c["id"],
+                "nombre": c["nombre"],
+                "telefono": c["telefono"],
+                "email": c.get("email", "")
+            })
 
-    # Guardar turnos
+    # --- Turnos ---
     with open(TURNOS_CSV, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(
-            f,
-            fieldnames=["id", "cliente_id", "fecha", "hora", "servicio", "estilista", "estado"]
-        )
+        fieldnames = ["id", "cliente_id", "fecha", "hora", "servicio", "estilista", "estado"]
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         for t in db["turnos"].values():
-            writer.writerow(t)
-
-
-def save_dict_json(db):
-    with open(DB_JSON, "w", encoding="utf-8") as f:
-        json.dump(db, f, indent=2, ensure_ascii=False)
-
-
-def load_dict_json():
-    with open(DB_JSON, encoding="utf-8") as f:
-        return json.load(f)
+            writer.writerow({
+                "id": t["id"],
+                "cliente_id": t["cliente_id"],
+                "fecha": t["fecha"],
+                "hora": t["hora"],
+                "servicio": t["servicio"],
+                "estilista": t.get("estilista", ""),
+                "estado": t.get("estado", "activo")
+            })
