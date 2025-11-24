@@ -63,4 +63,5 @@ class GestorTurnos:
         try:
             datetime.strptime(s, "%Y-%m-%d")
         except ValueError:
-            raise ValueError("Fecha inválida. F
+            raise ValueError("Fecha inválida. Formato: YYYY-MM-DD")
+
