@@ -1,5 +1,5 @@
 # models.py
-# Clases simples para representar datos
+# Clases simples para representar datos del sistema
 
 class Cliente:
     def __init__(self, id, nombre, telefono, email=None):
@@ -13,8 +13,10 @@ class Turno:
     def __init__(self, id, cliente_id, fecha, hora, servicio, estilista=None, estado="activo"):
         self.id = id
         self.cliente_id = cliente_id
-        self.fecha = fecha
-        self.hora = hora
+        self.fecha = fecha      # cadena "YYYY-MM-DD"
+        self.hora = hora        # cadena "HH:MM"
         self.servicio = servicio
         self.estilista = estilista
-        self.estado = estado
+        self.estado = estado    # "activo" o "cancelado"
+
+
