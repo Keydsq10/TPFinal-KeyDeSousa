@@ -17,7 +17,7 @@ python app.py
 - 'app.py' → Menú de consola e interacción del usuario  
 - 'gestor.py' → Lógica principal del sistema (GestorTurnos)  
 - 'models.py' → Clases base: Cliente y Turno  
-- 'storage.py' → Guardado y carga usando archivos CSV y dict (JSON opcional)
+- 'storage.py' → Guardado y carga usando archivos CSV y dict
 
 ---
 
@@ -28,7 +28,7 @@ python app.py
 - Reprogramar turno (cambiar fecha y hora)  
 - Cancelar turno  
 - Guardar datos a CSV  
-- Cargar datos desde CSV o JSON  
+- Cargar datos desde CSV
 
 ---
 
@@ -42,11 +42,12 @@ python app.py
 ---
 
 ## Descripción técnica
-El sistema usa un diccionario en memoria (`self.db`) con dos tablas:  
+El sistema usa un diccionario en memoria ('self.db') con dos tablas:  
 - 'clientes'  
 - 'turnos'
 
 La clase 'GestorTurnos' contiene toda la lógica: crear, modificar, listar y validar turnos.  
-La persistencia se maneja en `storage.py`, que convierte entre diccionarios y archivos CSV/JSON.
+La persistencia se maneja en 'storage.py', que convierte entre diccionarios y archivos CSV.
 
 ---
+
